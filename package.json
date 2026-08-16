@@ -1,0 +1,14 @@
+{
+  "name": "referencecollection.com",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "description": "Static site build for ReferenceCollection.com",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs --serve"
+  },
+  "devDependencies": {
+    "shiki": "^3.13.0"
+  }
+}

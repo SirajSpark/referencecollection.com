@@ -12,3 +12,7 @@
 .DS_Store
 Thumbs.db
 
+# Build
+/_site
+/node_modules
+
