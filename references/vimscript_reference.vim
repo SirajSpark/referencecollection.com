@@ -2,7 +2,7 @@
 " Vimscript Reference and Guide
 " 
 " ReferenceCollection.com
-" Licensed under CC BY-SA
+" Licensed under the MIT License
 " ---------------------------------------------------------------------------------
 
 " TABLE OF CONTENTS
