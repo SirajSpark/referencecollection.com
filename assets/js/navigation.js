@@ -15,10 +15,15 @@ if (light_mode != null)
 
 const scroll_top = document.getElementById('scroll_top');
 
-if (scroll_top != null)
+if (scroll_top != null) {
     window.addEventListener('scroll', () => {
-        this.scrollY <= 100 ? scroll_top.style.display = 'none' : scroll_top.style.display = 'flex';
+        scroll_top.style.display = window.scrollY <= 100 ? 'none' : 'flex';
     });
+
+    scroll_top.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
 const open_nav = document.getElementById('navigation_open'),
     close_nav = document.getElementById('navigation_close'),

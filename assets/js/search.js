@@ -1,12 +1,9 @@
 const searchInput = document.querySelector('#search_input');
 
 if (searchInput) {
-    searchInput.addEventListener('search', () => {
-        document.querySelectorAll('.language_card').forEach(item => {
-            item.style.display = '';
-        });
-    });
-
+    /* 'search' covers Enter and the native clear button, 'input' covers typing.
+       Both re-filter from the current value, so an empty box shows everything. */
+    searchInput.addEventListener('search', instantSearch);
     searchInput.addEventListener('input', instantSearch);
 }
 

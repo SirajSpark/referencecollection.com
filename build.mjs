@@ -44,11 +44,13 @@ function renderIndex(html, references) {
     const [before, rest] = splitOnce(html, '<!-- start_loop -->');
     const [card, after] = splitOnce(rest, '<!-- end_loop -->');
 
+    /* Function replacements, so a `$&` in a title is inserted literally
+       rather than being read as a replacement pattern. */
     const cards = references.map((ref) =>
         card
-            .replace('ref_link', `references/${page(ref)}`)
-            .replace('ref_title', escape(ref.title))
-            .replace('<!-- new_tag -->', ref.new ? '<span class="new_tag">new</span>' : '')
+            .replace('ref_link', () => `references/${page(ref)}`)
+            .replace('ref_title', () => escape(ref.title))
+            .replace('<!-- new_tag -->', () => (ref.new ? '<span class="new_tag">new</span>' : ''))
     );
 
     return before + cards.join('') + after;
@@ -88,8 +90,10 @@ async function renderReference(template, ref) {
         'meta_source_code': code,
     };
 
+    /* hasOwn, not `in`: `in` would match inherited names, so a stray
+       <!-- constructor --> comment would inject Object.prototype internals. */
     return template.replace(/<!-- ([\w:]+) -->/g, (whole, key) =>
-        key in meta ? meta[key] : whole
+        Object.hasOwn(meta, key) ? meta[key] : whole
     );
 }
 

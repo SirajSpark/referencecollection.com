@@ -56,6 +56,14 @@ select {
     font: inherit;
 }
 
+/* Controls that look like links/icons still need to be real buttons for
+   keyboard users, so strip the default chrome rather than the semantics. */
+button {
+    background: none;
+    border: 0;
+    color: inherit;
+}
+
 img {
     max-width: 100%;
     display: block;
