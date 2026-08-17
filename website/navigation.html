@@ -93,17 +93,17 @@
                 </ul>
 
                 <div class="social_list">
-                    <div class="default_link" id="dark_mode">
+                    <button type="button" class="default_link" id="dark_mode" aria-label="Switch to dark theme">
                         <svg width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z">
                             </path>
                         </svg>
-                    </div>
-                    <div class="default_link" id="light_mode">
+                    </button>
+                    <button type="button" class="default_link" id="light_mode" aria-label="Switch to light theme">
                         <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="1.7"
-                            fill="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            fill="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <circle cx="12" cy="12" r="4"></circle>
                             <line x1="12" y1="1" x2="12" y2="3"></line>
                             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -114,7 +114,7 @@
                             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                         </svg>
-                    </div>
+                    </button>
                     <div class="navigation_extras">
                         <div class="navigation_open navigation_link" id="navigation_open">
                             <svg width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -138,17 +138,12 @@
                 </div>
             </div>
         </nav>
-        <a id="scroll_top" class="scroll_top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        <button type="button" id="scroll_top" class="scroll_top" aria-label="Scroll to top">
             <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2" fill="none"
-                stroke-linecap="round" stroke-linejoin="round">
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <polyline points="17 11 12 6 7 11"></polyline>
-                <polyline points="17 18 12 13 7 18"></polyline><svg viewBox="0 0 24 24" width="24" height="24"
-                    stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                    class="css-i6dzq1">
-                    <polyline points="17 11 12 6 7 11"></polyline>
-                    <polyline points="17 18 12 13 7 18"></polyline>
-                </svg>
+                <polyline points="17 18 12 13 7 18"></polyline>
             </svg>
-        </a>
+        </button>
     </div>
 </header>
