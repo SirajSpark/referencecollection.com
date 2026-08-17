@@ -1,38 +1,4 @@
-/* DARK MODE */
-const scheme = localStorage.getItem("app-appearance"),
-    dark_theme = document.getElementById('darkTheme'),
-    light_theme = document.getElementById('lightTheme'),
-    darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-if (scheme !== undefined && scheme !== null) {
-    document.documentElement.setAttribute("app-appearance", scheme);
-    if (dark_theme && light_theme) {
-        if (scheme === "dark") {
-            dark_theme.removeAttribute('disabled');
-            light_theme.setAttribute('disabled', 'true');
-        } else {
-            light_theme.removeAttribute('disabled');
-            dark_theme.setAttribute('disabled', 'true');
-        }
-    }
-} else {
-    changeAppearance();
-    darkModeMediaQuery.addEventListener('change', event => {
-        changeAppearance();
-    });
-}
-
-function changeAppearance() {
-    const mode = darkModeMediaQuery.matches ? "dark" : "light";
-    document.documentElement.setAttribute("app-appearance", mode);
-    if (mode === "dark" && dark_theme && light_theme) {
-        dark_theme.removeAttribute('disabled');
-        light_theme.setAttribute('disabled', 'true');
-    } else if (dark_theme && light_theme) {
-        light_theme.removeAttribute('disabled');
-        dark_theme.setAttribute('disabled', 'true');
-    }
-}
+/* Theme resolution lives in the inline <head> script, so it runs before paint. */
 
 /* DROPDOWN */
 function toggleDropdown() {

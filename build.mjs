@@ -31,11 +31,10 @@ const page = (ref) => `${ref.filename}.html`;
 async function injectPartials(html) {
     const partials = {
         navigation: await read('website', 'navigation.html'),
-        contribute: await read('website', 'contribute.html'),
         footer: await read('website', 'footer.html'),
     };
     return html.replace(
-        /<section id="(navigation|contribute|footer)"([^>]*)><\/section>/g,
+        /<section id="(navigation|footer)"([^>]*)><\/section>/g,
         (_, id, attrs) => `<section id="${id}"${attrs}>\n${partials[id]}\n</section>`
     );
 }
