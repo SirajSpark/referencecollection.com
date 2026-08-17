@@ -5,20 +5,12 @@ if (dark_mode != null)
     dark_mode.addEventListener('click', () => {
         localStorage.setItem("app-appearance", "dark");
         document.documentElement.setAttribute("app-appearance", "dark");
-        if (dark_theme && light_theme) {
-            dark_theme.removeAttribute('disabled');
-            light_theme.setAttribute('disabled', 'true');
-        }
     });
 
 if (light_mode != null)
     light_mode.addEventListener('click', () => {
         localStorage.setItem("app-appearance", "light");
         document.documentElement.setAttribute("app-appearance", "light");
-        if (dark_theme && light_theme) {
-            light_theme.removeAttribute('disabled');
-            dark_theme.setAttribute('disabled', 'true');
-        }
     });
 
 const scroll_top = document.getElementById('scroll_top');

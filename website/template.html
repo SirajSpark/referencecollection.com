@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" app-appearance="[light | dark]">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -17,7 +17,7 @@
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
 
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary">
     <!-- meta_twitter:title -->
     <!-- meta_twitter:description -->
 
@@ -36,6 +36,27 @@
     <link rel="icon" href="../assets/images/favicon.ico" />
 
     <link href="../assets/css/main.css?v=27012025" type="text/css" rel="stylesheet" />
+
+    <!-- Resolve the theme before first paint. Must stay inline and blocking:
+         deferring it flashes the light palette at dark-mode visitors. -->
+    <script>
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem("app-appearance"); } catch (e) { }
+            var media = window.matchMedia('(prefers-color-scheme: dark)');
+            var apply = function (mode) {
+                document.documentElement.setAttribute("app-appearance", mode);
+            };
+            apply(stored || (media.matches ? "dark" : "light"));
+            /* Only follow the OS while the visitor has no explicit preference. */
+            if (!stored) {
+                media.addEventListener('change', function (event) {
+                    apply(event.matches ? "dark" : "light");
+                });
+            }
+        })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XZWG77C7G4"></script>
     <script>
@@ -68,7 +89,7 @@
 
             <div class="header_buttons">
                 <div class="flex_buttons">
-                    <a class="header_back" href="../../#references">
+                    <a class="header_back" href="../#references">
                         <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2"
                             fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="11 17 6 12 11 7"></polyline>
@@ -79,7 +100,7 @@
                 </div>
                 <div class="flex_buttons">
                     <a class="header_contribute" target="_blank"
-                        href="https://github.com/DisclosedCode/referencecollection.com">
+                        href="https://github.com/SirajSpark/referencecollection.com">
                         <svg width="15" height="15" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                             fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -110,7 +131,6 @@
         </div>
     </section>
 
-    <section id="contribute" class="contribute_wrapper"></section>
     <section id="footer"></section>
     <section id="license">
         <div>Licensed under</div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" app-appearance="[light | dark]">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -22,7 +22,7 @@
 
     <link rel="canonical" href="https://referencecollection.com/">
 
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Reference Collection: Simplifying Coding Resources">
     <meta name="twitter:description"
         content="Comprehensive references for various programming languages designed to simplify your coding experience by providing practical guides that are constantly updated.">
@@ -47,6 +47,27 @@
     <link rel="icon" href="assets/images/favicon.ico" />
 
     <link href="assets/css/main.css?v=27012025" type="text/css" rel="stylesheet" />
+
+    <!-- Resolve the theme before first paint. Must stay inline and blocking:
+         deferring it flashes the light palette at dark-mode visitors. -->
+    <script>
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem("app-appearance"); } catch (e) { }
+            var media = window.matchMedia('(prefers-color-scheme: dark)');
+            var apply = function (mode) {
+                document.documentElement.setAttribute("app-appearance", mode);
+            };
+            apply(stored || (media.matches ? "dark" : "light"));
+            /* Only follow the OS while the visitor has no explicit preference. */
+            if (!stored) {
+                media.addEventListener('change', function (event) {
+                    apply(event.matches ? "dark" : "light");
+                });
+            }
+        })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XZWG77C7G4"></script>
     <script>
@@ -75,7 +96,7 @@
         </div>
     </section>
 
-    <section class="references">
+    <section class="references" id="references">
         <div class="main_container">
             <div class="references_container">
 
@@ -112,7 +133,6 @@
         </div>
     </section>
 
-    <section id="contribute"></section>
     <section id="footer"></section>
     <section id="license">
         <div>Licensed under</div>
