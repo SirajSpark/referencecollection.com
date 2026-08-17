@@ -12,12 +12,6 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: "Geist Regular";
-    src: url("../fonts/Geist-Regular.woff2") format("woff2");
-    font-display: swap;
-}
-
 /* Minimal CSS reset for browser compatibility */
 *,
 *::before,
@@ -87,7 +81,6 @@ a {
     --main-radius: 0.25rem;
 
     /* Font */
-    --font: 'Geist Regular', sans-serif;
     --font-medium: 'Geist Medium', sans-serif;
     --font-jetbrains: 'JetBrainsMono', sans-serif;
     --font-size: 0.850rem;
@@ -111,28 +104,8 @@ a {
     --box-shadow-0: rgba(0, 0, 0, 0.15) 0px 3px 10px;
 }
 
-/* DARK/LIGHT MODE */
-
-:root[app-appearance="light"] {
-
-    /* Colors */
-    --background-primary: #fefcfa;
-    --background-secondary: #f6f5f5;
-
-    --c1: #8d8d8d;
-    --c2: #374253;
-    --c3: #d6a12b;
-    --c4: #e2e2e2;
-    --c5: #e0eefe;
-    --c6: #00abff;
-    --c7: #e73b2c;
-    --c9: #ecebeb;
-    --c10: #f9edd6;
-    --c11: #f4f4f4;
-
-    /* Shadows */
-    --box-shadow-0: rgba(0, 0, 0, 0.15) 0px 3px 10px;
-}
+/* DARK/LIGHT MODE — the :root defaults above are the light palette, so only
+   dark needs overriding. */
 
 :root[app-appearance="dark"] {
 
@@ -235,16 +208,14 @@ body {
 }
 
 .navigation_list,
-.social_list,
-.footer_list {
+.social_list {
     display: flex;
     align-items: center;
     flex-direction: row;
     padding: 0;
 }
 
-.navigation_menu,
-.footer_list {
+.navigation_menu {
     column-gap: 1rem;
 }
 
@@ -372,7 +343,9 @@ body {
     padding: 9rem var(--main-side-padding) 8rem var(--main-side-padding);
 }
 
-.hero_content h1:nth-child(1) {
+/* Keyed off classes rather than position, so the eyebrow can be a <p> and
+   leave the section with a single <h1>. */
+.hero_content .hero_eyebrow {
     font-family: var(--font-jetbrains);
     font-size: 0.8rem;
     line-height: 1.7;
@@ -383,7 +356,7 @@ body {
     border-radius: 5rem;
 }
 
-.hero_content h1:nth-child(2) {
+.hero_content h1 {
     font-family: var(--font-medium);
     line-height: 1.15;
     font-size: 2.60rem;
@@ -391,7 +364,7 @@ body {
     color: var(--c2);
 }
 
-.hero_content p {
+.hero_content p:not(.hero_eyebrow) {
     font-family: var(--font-jetbrains);
     font-size: 0.925rem;
     line-height: 1.7;
@@ -604,6 +577,15 @@ input[type="search"]::-ms-clear {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.950rem;
+}
+
+/* No display property, so the [hidden] attribute keeps working. */
+.no_results {
+    font-family: var(--font-jetbrains);
+    font-size: 0.875rem;
+    color: var(--c1);
+    padding: 0.950rem 0;
+    text-align: center;
 }
 
 .language {

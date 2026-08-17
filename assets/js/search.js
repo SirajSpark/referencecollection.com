@@ -1,4 +1,5 @@
 const searchInput = document.querySelector('#search_input');
+const noResults = document.querySelector('#no_results');
 
 if (searchInput) {
     /* 'search' covers Enter and the native clear button, 'input' covers typing.
@@ -10,9 +11,14 @@ if (searchInput) {
 function instantSearch() {
     const searchTerm = searchInput.value.toLowerCase();
     const cards = document.querySelectorAll('.language_card');
-    
+    let matches = 0;
+
     cards.forEach(item => {
         const title = item.querySelector('.language').textContent.toLowerCase();
-        item.style.display = title.includes(searchTerm) ? '' : 'none';
+        const isMatch = title.includes(searchTerm);
+        item.style.display = isMatch ? '' : 'none';
+        if (isMatch) matches++;
     });
+
+    if (noResults) noResults.hidden = matches > 0;
 }
