@@ -12,8 +12,10 @@
 
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
-import { dirname, extname, join, resolve } from 'node:path';
+import { dirname, extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { codeToHtml } from 'shiki';
 
@@ -22,7 +24,8 @@ const out = join(root, '_site');
 const site = 'https://referencecollection.com';
 
 const read = (...p) => readFile(join(root, ...p), 'utf8');
-const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
 /* Page names match the URLs the old server served, e.g. docker_reference.sh.html */
 const page = (ref) => `${ref.filename}.html`;
@@ -97,27 +100,60 @@ async function renderReference(template, ref) {
     );
 }
 
+/* Last commit date for a path, or null. Deliberately not mtime: a CI checkout
+   rewrites mtimes to clone time, which would date every page to the build. */
+function lastCommitDate(...p) {
+    try {
+        const iso = execFileSync('git', ['log', '-1', '--format=%cI', '--', join(...p)],
+            { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+        return iso || null;
+    } catch {
+        return null;
+    }
+}
+
 function renderSitemap(references) {
-    const urls = [`${site}/`, ...references.map((r) => `${site}/references/${page(r)}`)];
+    /* A shallow clone yields no dates; omit lastmod entirely rather than
+       publish a wrong one. */
+    const entries = [
+        { loc: `${site}/`, lastmod: lastCommitDate('index.html') },
+        ...references.map((r) => ({
+            loc: `${site}/references/${page(r)}`,
+            lastmod: lastCommitDate('references', r.filename),
+        })),
+    ];
     return [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-        ...urls.map((loc) => `    <url><loc>${loc}</loc></url>`),
+        ...entries.map(({ loc, lastmod }) =>
+            `    <url><loc>${loc}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`),
         '</urlset>',
         '',
     ].join('\n');
 }
 
+/* Cache-bust from the stylesheet's own bytes, so the query string changes when
+   the CSS does and not before. Stamped into the template before the highlighted
+   source is injected, so a reference file mentioning main.css is left alone. */
+const stampAssets = (html, version) =>
+    html.replace(/main\.css\?v=[^"']*/g, `main.css?v=${version}`);
+
 async function build() {
     const references = JSON.parse(await read('references.json'));
+    const cssVersion = createHash('sha256')
+        .update(await read('assets', 'css', 'main.css'))
+        .digest('hex')
+        .slice(0, 8);
 
     await rm(out, { recursive: true, force: true });
     await mkdir(join(out, 'references'), { recursive: true });
 
-    const index = await injectPartials(renderIndex(await read('index.html'), references));
+    const index = stampAssets(
+        await injectPartials(renderIndex(await read('index.html'), references)), cssVersion);
     await writeFile(join(out, 'index.html'), index);
 
-    const template = await injectPartials(await read('website', 'template.html'));
+    const template = stampAssets(
+        await injectPartials(await read('website', 'template.html')), cssVersion);
     for (const ref of references) {
         await writeFile(join(out, 'references', page(ref)), await renderReference(template, ref));
     }
@@ -142,7 +178,7 @@ function serve(port = 8080) {
         const path = decodeURIComponent(req.url.split('?')[0]);
         const candidate = [path, `${path}.html`, join(path, 'index.html')]
             .map((p) => resolve(out, `.${p}`))
-            .find((p) => p.startsWith(out) && existsSync(p) && statSync(p).isFile());
+            .find((p) => p.startsWith(out + sep) && existsSync(p) && statSync(p).isFile());
         if (!candidate) {
             res.writeHead(404, { 'Content-Type': 'text/plain' });
             return res.end('Not found');

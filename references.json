@@ -103,7 +103,6 @@
         "title": "Git",
         "filename": "git_reference.sh",
         "language": "shellscript",
-        "new":true,
         "meta": {
             "title": "Git Reference: Comprehensive Developer's Guide",
             "description": "Git Guide covering basic to advanced concepts, including branching, merging, rebasing, and more for version control. Essential reference for developers of all levels.",
@@ -114,7 +113,6 @@
         "title": "Docker",
         "filename": "docker_reference.sh",
         "language": "shellscript",
-        "new":true,
         "meta": {
             "title": "Docker Reference: Comprehensive Developer's Guide",
             "description": "Docker Guide covering basic to advanced concepts, including networking, volumes, security, and more. Essential reference for developers of all levels.",
