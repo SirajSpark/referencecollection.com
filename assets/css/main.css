@@ -286,10 +286,6 @@ body {
     color: var(--c3);
 }
 
-.beta {
-    fill: var(--c5);
-}
-
 @media screen and (max-width: 900px) {
 
     .navigation_menu .navigation_divider {
